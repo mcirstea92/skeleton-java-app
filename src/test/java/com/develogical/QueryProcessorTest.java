@@ -39,4 +39,9 @@ public class QueryProcessorTest {
     public void returns3_7_11whenprime3_4_7_11() throws Exception {
         assertThat(queryProcessor.process("which of the following numbers are primes:3,4,7,11"), is("3,7,11"));
     }
+
+    @Test
+    public void returns729whensquareandcube_129_900_729() throws Exception {
+        assertThat(queryProcessor.process("which of the following numbers is both a square and a cube: 129, 900, 729"), is("729"));
+    }
 }

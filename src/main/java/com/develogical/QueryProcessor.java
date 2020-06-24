@@ -1,16 +1,17 @@
 package com.develogical;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.develogical.MathUtils.printListWithCommas;
+
 public class QueryProcessor {
 
     private static final String LARGEST = "which of the following numbers is the largest";
-    private static final String IN_FIBONACCI = "number in the Fibonacci sequence";
     private static final String WHICH_ARE_PRIME = "which of the following numbers are primes";
+    private static final String WHICH_IS_SQUARE_AND_CUBE = "which of the following numbers is both a square and a cube";
 
     public String process(String query) {
         if (query.toLowerCase().contains("romeo and juliet")) {
@@ -29,27 +30,43 @@ public class QueryProcessor {
             String[] parsedStringNumbers = numbers.split(",");
             List<Integer> ints = new ArrayList<>();
             for (String parsedStringNumber : parsedStringNumbers) {
-                ints.add(Integer.parseInt(parsedStringNumber));
+                ints.add(Integer.parseInt(removeWhitespaces(parsedStringNumber)));
             }
             System.out.println("Largest number is " + Collections.max(ints));
             return "" + Collections.max(ints);
         }
 
-        if (query.contains(WHICH_ARE_PRIME)) {
+        if (query.toLowerCase().contains(WHICH_ARE_PRIME)) {
             String numbers = query.substring(WHICH_ARE_PRIME.length() + 1);
             System.out.println("Numbers are " + numbers);
             String[] parsedStringNumbers = numbers.split(",");
             List<Integer> results = new ArrayList<>();
             for (String parsedStringNumber : parsedStringNumbers) {
-                if (MathUtils.isPrime(Integer.parseInt(parsedStringNumber))) {
-                    results.add(Integer.parseInt(parsedStringNumber));
+                if (MathUtils.isPrime(Integer.parseInt(removeWhitespaces(parsedStringNumber)))) {
+                    results.add(Integer.parseInt(removeWhitespaces(parsedStringNumber)));
                 }
             }
-            return results.stream().
-                    map(Object::toString).
-                    collect(Collectors.joining(",")).toString();
+            return printListWithCommas(results);
+        }
+
+        if (query.toLowerCase().contains(WHICH_IS_SQUARE_AND_CUBE)) {
+            String numbers = query.substring(WHICH_IS_SQUARE_AND_CUBE.length() + 1);
+            System.out.println("Numbers are " + numbers);
+            String[] parsedStringNumbers = numbers.split(",");
+            List<Integer> results = new ArrayList<>();
+            for (String parsedStringNumber : parsedStringNumbers) {
+                if (MathUtils.isBothSquareAndCube(Integer.parseInt(removeWhitespaces(parsedStringNumber)))) {
+                    results.add(Integer.parseInt(removeWhitespaces(parsedStringNumber)));
+                }
+            }
+            return printListWithCommas(results);
         }
 
         return "";
+    }
+
+
+    private String removeWhitespaces(String string) {
+        return string.replaceAll("\\s+", "");
     }
 }

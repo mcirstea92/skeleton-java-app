@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QueryProcessor {
 
     private static final String LARGEST = "which of the following numbers is the largest";
+    private static final String IN_FIBONACCI = "number in the Fibonacci sequence";
+    private static final String WHICH_ARE_PRIME = "which of the following numbers are primes";
 
     public String process(String query) {
         if (query.toLowerCase().contains("romeo and juliet")) {
@@ -30,6 +33,21 @@ public class QueryProcessor {
             }
             System.out.println("Largest number is " + Collections.max(ints));
             return "" + Collections.max(ints);
+        }
+
+        if (query.contains(WHICH_ARE_PRIME)) {
+            String numbers = query.substring(WHICH_ARE_PRIME.length() + 1);
+            System.out.println("Numbers are " + numbers);
+            String[] parsedStringNumbers = numbers.split(",");
+            List<Integer> results = new ArrayList<>();
+            for (String parsedStringNumber : parsedStringNumbers) {
+                if (MathUtils.isPrime(Integer.parseInt(parsedStringNumber))) {
+                    results.add(Integer.parseInt(parsedStringNumber));
+                }
+            }
+            return results.stream().
+                    map(Object::toString).
+                    collect(Collectors.joining(",")).toString();
         }
 
         return "";
